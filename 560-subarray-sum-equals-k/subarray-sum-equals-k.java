@@ -1,21 +1,15 @@
 class Solution {
     public int subarraySum(int[] nums, int k) {
-        int [] presum=new int[nums.length];
+        HashMap<Integer, Integer> map = new HashMap<>();
+        map.put(0, 1);
+        int sum = 0;
         int count=0;
-        presum[0]=nums[0];
-        if (presum[0] == k) { 
-            count+=1;
-        }
-        for(int i=1;i<nums.length;i++){
-            presum[i]=presum[i-1]+nums[i];
-            if(presum[i]==k){
-                count+=1;
+        for (int num : nums) {
+            sum += num;
+            if (map.containsKey(sum - k)) {
+                count += map.get(sum - k);
             }
-            for (int j = 0; j < i; j++) { 
-                if (presum[i] - presum[j] == k) { 
-                    count++;
-                }
-            }
+            map.put(sum, map.getOrDefault(sum, 0) + 1);
         }
         return count;
     }
